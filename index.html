@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#F5F8F5" />
+    <title>健康檔案設定｜健康小助手</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="健康小助手首頁">
+          <span class="brand-mark">＋</span>
+          <span>健康小助手</span>
+        </a>
+        <span id="lineStatus" class="line-status">個人設定</span>
+      </header>
+
+      <section class="intro" aria-labelledby="pageTitle">
+        <p class="eyebrow">建立你的健康檔案</p>
+        <h1 id="pageTitle">先認識你一點</h1>
+        <p>這些資料會用來提供更貼近你的健康建議。</p>
+      </section>
+
+      <section class="stepper" aria-label="設定進度">
+        <span class="step active">1</span><span class="step-line"></span><span class="step">2</span><span class="step-line"></span><span class="step">3</span>
+        <div><b>基本資料</b><span>約需 1 分鐘</span></div>
+      </section>
+
+      <form id="profileForm" novalidate>
+        <section class="card" aria-labelledby="basicTitle">
+          <div class="card-heading">
+            <span class="icon-badge">✦</span>
+            <div><h2 id="basicTitle">基本資料</h2><p>請填寫目前的身體資訊</p></div>
+          </div>
+
+          <fieldset>
+            <legend>生理性別</legend>
+            <div class="choice-grid two-col">
+              <label class="choice"><input type="radio" name="gender" value="female" required /><span>女性</span></label>
+              <label class="choice"><input type="radio" name="gender" value="male" /><span>男性</span></label>
+              <label class="choice"><input type="radio" name="gender" value="other" /><span>其他／不透露</span></label>
+            </div>
+            <p class="error" data-error="gender"></p>
+          </fieldset>
+
+          <div class="field-row">
+            <label class="field" for="age">年齡
+              <div class="input-wrap"><input id="age" name="age" type="number" inputmode="numeric" min="1" max="120" placeholder="例如 28" required /><span>歲</span></div>
+              <small class="error" data-error="age"></small>
+            </label>
+            <label class="field" for="height">身高
+              <div class="input-wrap"><input id="height" name="height" type="number" inputmode="decimal" min="80" max="250" step="0.1" placeholder="例如 165" required /><span>cm</span></div>
+              <small class="error" data-error="height"></small>
+            </label>
+          </div>
+
+          <label class="field" for="weight">體重
+            <div class="input-wrap"><input id="weight" name="weight" type="number" inputmode="decimal" min="20" max="400" step="0.1" placeholder="例如 58.5" required /><span>kg</span></div>
+            <small class="error" data-error="weight"></small>
+          </label>
+        </section>
+
+        <section id="bmiCard" class="bmi-card hidden" aria-live="polite">
+          <div><span class="bmi-label">你的 BMI</span><strong id="bmiValue">--</strong></div>
+          <div class="bmi-copy"><b id="bmiLabel">輸入身高與體重後計算</b><span id="bmiDescription">BMI 僅供初步健康評估參考</span></div>
+        </section>
+
+        <label class="privacy"><input id="privacy" name="privacy" type="checkbox" required /><span>我同意健康小助手依據<a href="#privacy">隱私權政策</a>蒐集與使用上述健康資料，以提供個人化服務。</span></label>
+        <p class="error privacy-error" data-error="privacy"></p>
+
+        <button id="submitButton" class="submit-button" type="submit">儲存並繼續 <span>→</span></button>
+        <p class="security-note">⌁ 你的資料會受到妥善保護</p>
+      </form>
+    </main>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
