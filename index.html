@@ -22,10 +22,23 @@
       </header>
 
       <section class="intro" aria-labelledby="pageTitle">
-        <p class="eyebrow">建立你的健康檔案</p>
-        <h1 id="pageTitle">先認識你一點</h1>
-        <p>這些資料會用來提供更貼近你的健康建議。</p>
+        <div class="hero-copy">
+          <p class="eyebrow">建立你的健康檔案</p>
+          <h1 id="pageTitle">先認識你一點</h1>
+          <p>只需要基本資料，就能獲得更適合你的健康內容。</p>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <span class="hero-heart">♥</span>
+          <span class="pulse-ring ring-one"></span>
+          <span class="pulse-ring ring-two"></span>
+        </div>
       </section>
+
+      <div class="benefit-row" aria-label="服務特色">
+        <span>✓ 約 1 分鐘</span>
+        <span>✓ 個人化建議</span>
+        <span>✓ 資料保護</span>
+      </div>
 
       <section class="stepper" aria-label="設定進度">
         <span class="step active">1</span><span class="step-line"></span><span class="step">2</span><span class="step-line"></span><span class="step">3</span>
@@ -68,7 +81,7 @@
 
         <section id="bmiCard" class="bmi-card hidden" aria-live="polite">
           <div><span class="bmi-label">你的 BMI</span><strong id="bmiValue">--</strong></div>
-          <div class="bmi-copy"><b id="bmiLabel">輸入身高與體重後計算</b><span id="bmiDescription">BMI 僅供初步健康評估參考</span></div>
+          <div class="bmi-copy"><b id="bmiLabel">輸入身高與體重後計算</b><span id="bmiDescription">BMI 僅供初步健康評估參考</span><div class="bmi-scale"><i id="bmiMarker"></i></div></div>
         </section>
 
         <label class="privacy"><input id="privacy" name="privacy" type="checkbox" required /><span>我同意健康小助手依據<a href="#privacy">隱私權政策</a>蒐集與使用上述健康資料，以提供個人化服務。</span></label>
