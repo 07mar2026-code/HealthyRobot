@@ -34,6 +34,8 @@ function calculateBmi() {
   document.querySelector("#bmiValue").textContent = bmi.toFixed(1);
   document.querySelector("#bmiLabel").textContent = label;
   document.querySelector("#bmiDescription").textContent = description;
+  const markerPosition = Math.max(4, Math.min(96, ((bmi - 14) / 26) * 100));
+  document.querySelector("#bmiMarker").style.left = `${markerPosition}%`;
   card.classList.remove("hidden");
 }
 function validate() {
