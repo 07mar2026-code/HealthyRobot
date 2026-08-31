@@ -21,7 +21,15 @@ async function initialiseLiff() {
 }
 
 function showToast(message) { toast.textContent = message; toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 2800); }
-function errorFor(name, message = "") { const target = document.querySelector(`[data-error="${name}"]`); if (target) target.textContent = message; const input = form.elements[name]; input?.closest(".field")?.classList.toggle("invalid", Boolean(message)); }
+function errorFor(name, message = "") {
+  const target = document.querySelector(`[data-error="${name}"]`);
+  if (target) target.textContent = message;
+
+  // A radio group is a RadioNodeList, not a single element. Locate the first
+  // matching control so grouped radios and regular inputs follow the same path.
+  const input = form.querySelector(`[name="${name}"]`);
+  input?.closest(".field")?.classList.toggle("invalid", Boolean(message));
+}
 function calculateBmi() {
   const height = Number(form.height.value), weight = Number(form.weight.value);
   const card = document.querySelector("#bmiCard");
