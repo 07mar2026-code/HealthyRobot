@@ -1,7 +1,7 @@
 // 部署前請換成 LINE Developers 後台提供的 LIFF ID；留空時可在一般瀏覽器預覽。
 const LIFF_ID = "2010801069-26iRMu35";
 // 若使用 n8n，填入 Webhook Production URL，例如：https://your-n8n/webhook/health-profile
-const PROFILE_WEBHOOK_URL = "https://20260419.zeabur.app/webhook/knowledge";
+const PROFILE_WEBHOOK_URL = "https://20260419.zeabur.app/webhook/health-profile";
 
 const form = document.querySelector("#profileForm");
 const fields = ["age", "height", "weight"];
