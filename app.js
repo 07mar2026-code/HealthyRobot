@@ -54,7 +54,7 @@ form.addEventListener("submit", async event => {
   const payload = { gender:form.gender.value, age:Number(form.age.value), heightCm:Number(form.height.value), weightKg:Number(form.weight.value), bmi:Number((Number(form.weight.value) / ((Number(form.height.value)/100)**2)).toFixed(1)), lineUserId:lineProfile?.userId ?? null, displayName:lineProfile?.displayName ?? null, updatedAt:new Date().toISOString() };
   const button = document.querySelector("#submitButton"); button.disabled=true; button.textContent="儲存中…";
   try {
-    if (PROFILE_WEBHOOK_URL) { const response = await fetch(PROFILE_WEBHOOK_URL, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload) }); if (!response.ok) throw new Error("Webhook request failed"); }
+    if (PROFILE_WEBHOOK_URL) { const response = await fetch(PROFILE_WEBHOOK_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=UTF-8"}, body:JSON.stringify(payload) }); if (!response.ok) throw new Error("Webhook request failed"); }
     localStorage.setItem("healthProfile", JSON.stringify(payload));
     showToast("健康檔案已儲存");
     // 下一步可導向健康目標設定頁，或改成 liff.sendMessages() 回傳摘要到聊天室。
