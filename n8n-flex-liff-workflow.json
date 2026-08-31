@@ -1,0 +1,107 @@
+{
+  "name": "HealthyRobot - Flex Message + LIFF",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "line-health-bot",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "1b6d1cc1-b3af-41dc-ae8a-939e6813ec52",
+      "name": "LINE Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-700, -180],
+      "webhookId": "line-health-bot"
+    },
+    {
+      "parameters": {
+        "jsCode": "const event = $json.body?.events?.[0];\nif (!event?.replyToken) return [];\n\nconst text = event.message?.type === 'text' ? event.message.text.trim() : '';\nconst keywords = ['設定資料', '健康資料', '建立檔案', '開始設定'];\nconst shouldReply = event.type === 'follow' || keywords.some(keyword => text.includes(keyword));\nif (!shouldReply) return [];\n\nreturn [{\n  json: {\n    replyToken: event.replyToken,\n    messages: [{\n      type: 'flex',\n      altText: '建立健康檔案，開始設定你的基本資料',\n      contents: {\n        type: 'bubble',\n        size: 'mega',\n        body: {\n          type: 'box',\n          layout: 'vertical',\n          paddingAll: '24px',\n          backgroundColor: '#F4F8F5',\n          contents: [\n            { type: 'text', text: 'HEALTH PROFILE', size: 'xs', weight: 'bold', color: '#187A59' },\n            { type: 'text', text: '建立你的健康檔案', size: 'xl', weight: 'bold', color: '#19342C', margin: 'md' },\n            { type: 'text', text: '只需要基本資料，就能獲得更適合你的健康內容。', size: 'sm', color: '#6D8179', wrap: true, margin: 'sm' },\n            { type: 'separator', color: '#DCE9E2', margin: 'xl' },\n            {\n              type: 'box', layout: 'vertical', spacing: 'sm', margin: 'xl', contents: [\n                { type: 'text', text: '✓ 約 1 分鐘即可完成', size: 'sm', color: '#537168' },\n                { type: 'text', text: '✓ 提供個人化健康建議', size: 'sm', color: '#537168' },\n                { type: 'text', text: '✓ 健康資料妥善保護', size: 'sm', color: '#537168' }\n              ]\n            },\n            {\n              type: 'button', style: 'primary', height: 'sm', color: '#187A59', margin: 'xl',\n              action: { type: 'uri', label: '開始設定健康資料', uri: 'https://liff.line.me/2010801069-26iRMu35' }\n            }\n          ]\n        }\n      }\n    }]\n  }\n}];"
+      },
+      "id": "5b90c663-c8cb-48e4-b5b0-04ae0054c455",
+      "name": "建立 Flex Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-440, -180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/reply",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer REPLACE_WITH_CHANNEL_ACCESS_TOKEN" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "e9a4d69d-9b85-48bd-bad5-96da4c7e3e32",
+      "name": "回覆 LINE Flex Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-160, -180]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "health-profile",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "6adb886f-bbd0-4d17-81bb-f7971019b33d",
+      "name": "LIFF 健康資料 Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-700, 180],
+      "webhookId": "health-profile"
+    },
+    {
+      "parameters": {
+        "jsCode": "let profile = $json.body;\nif (typeof profile === 'string') {\n  try { profile = JSON.parse(profile); } catch { throw new Error('無法解析健康資料'); }\n}\n\nconst age = Number(profile.age);\nconst heightCm = Number(profile.heightCm);\nconst weightKg = Number(profile.weightKg);\nconst allowedGenders = ['female', 'male', 'other'];\n\nif (!allowedGenders.includes(profile.gender)) throw new Error('生理性別格式錯誤');\nif (!Number.isFinite(age) || age < 1 || age > 120) throw new Error('年齡超出範圍');\nif (!Number.isFinite(heightCm) || heightCm < 80 || heightCm > 250) throw new Error('身高超出範圍');\nif (!Number.isFinite(weightKg) || weightKg < 20 || weightKg > 400) throw new Error('體重超出範圍');\n\nconst bmi = Number((weightKg / ((heightCm / 100) ** 2)).toFixed(1));\nreturn [{ json: { ok: true, profile: { gender: profile.gender, age, heightCm, weightKg, bmi, lineUserId: profile.lineUserId || null, displayName: profile.displayName || null, updatedAt: new Date().toISOString() } } }];"
+      },
+      "id": "bedf45b7-25ab-4c91-9283-c15a27e9f502",
+      "name": "驗證健康資料",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-420, 180]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: $json.ok, message: '健康檔案已儲存', profile: $json.profile } }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "https://07mar2026-code.github.io" },
+              { "name": "Vary", "value": "Origin" }
+            ]
+          }
+        }
+      },
+      "id": "7264e113-379f-467f-b4cc-684f4c4d74d5",
+      "name": "回覆 LIFF",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [-140, 180]
+    }
+  ],
+  "connections": {
+    "LINE Webhook": { "main": [[{ "node": "建立 Flex Message", "type": "main", "index": 0 }]] },
+    "建立 Flex Message": { "main": [[{ "node": "回覆 LINE Flex Message", "type": "main", "index": 0 }]] },
+    "LIFF 健康資料 Webhook": { "main": [[{ "node": "驗證健康資料", "type": "main", "index": 0 }]] },
+    "驗證健康資料": { "main": [[{ "node": "回覆 LIFF", "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "60a3e873-7bd8-4301-b9a5-48e8ca48958f",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}
