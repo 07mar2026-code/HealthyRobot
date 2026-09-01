@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#F5F8F5" />
+    <title>睡眠品質｜健康小助手</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css?v=20260901" />
+    <link rel="stylesheet" href="sleep.css?v=20260901" />
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  </head>
+  <body>
+    <main class="app-shell sleep-page">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="返回基本資料">
+          <span class="brand-mark">＋</span><span>健康小助手</span>
+        </a>
+        <span id="lineStatus" class="line-status">睡眠紀錄</span>
+      </header>
+
+      <section class="sleep-intro" aria-labelledby="pageTitle">
+        <div>
+          <p class="eyebrow">每日健康紀錄</p>
+          <h1 id="pageTitle">昨晚睡得好嗎？</h1>
+          <p>記下睡眠時間與醒來後的精神狀態。</p>
+        </div>
+        <div class="moon-visual" aria-hidden="true"><span>☾</span><i></i><b>✦</b></div>
+      </section>
+
+      <section class="stepper" aria-label="設定進度">
+        <span class="step done">✓</span><span class="step-line done-line"></span><span class="step active">2</span><span class="step-line"></span><span class="step">3</span>
+        <div><b>睡眠品質</b><span>記錄昨晚狀態</span></div>
+      </section>
+
+      <form id="sleepForm" novalidate>
+        <section class="card sleep-card" aria-labelledby="sleepTitle">
+          <div class="card-heading">
+            <span class="icon-badge moon-badge">☾</span>
+            <div><h2 id="sleepTitle">睡眠時間</h2><p>跨午夜也會自動換算</p></div>
+          </div>
+
+          <div class="time-row">
+            <label class="field" for="bedTime">幾點睡
+              <div class="input-wrap time-input"><input id="bedTime" name="bedTime" type="time" required /></div>
+              <small class="error" data-error="bedTime"></small>
+            </label>
+            <span class="time-arrow" aria-hidden="true">→</span>
+            <label class="field" for="wakeTime">幾點醒
+              <div class="input-wrap time-input"><input id="wakeTime" name="wakeTime" type="time" required /></div>
+              <small class="error" data-error="wakeTime"></small>
+            </label>
+          </div>
+
+          <section id="durationCard" class="duration-card empty" aria-live="polite">
+            <span class="duration-icon">◷</span>
+            <div><small>睡眠時間</small><strong id="durationText">請選擇時間</strong></div>
+            <span id="durationHint">自動計算</span>
+          </section>
+        </section>
+
+        <section class="card energy-card" aria-labelledby="energyTitle">
+          <div class="card-heading compact-heading">
+            <span class="icon-badge energy-badge">☀</span>
+            <div><h2 id="energyTitle">醒來的精神程度</h2><p>1 分很疲累，5 分精神飽滿</p></div>
+          </div>
+          <fieldset class="energy-fieldset">
+            <legend class="sr-only">精神程度 1 到 5 分</legend>
+            <div class="energy-scale">
+              <label><input type="radio" name="energyLevel" value="1" required /><span><b>1</b><small>很疲累</small></span></label>
+              <label><input type="radio" name="energyLevel" value="2" /><span><b>2</b><small>疲累</small></span></label>
+              <label><input type="radio" name="energyLevel" value="3" /><span><b>3</b><small>普通</small></span></label>
+              <label><input type="radio" name="energyLevel" value="4" /><span><b>4</b><small>不錯</small></span></label>
+              <label><input type="radio" name="energyLevel" value="5" /><span><b>5</b><small>很好</small></span></label>
+            </div>
+            <p class="error" data-error="energyLevel"></p>
+          </fieldset>
+
+          <label class="field dream-field" for="dreamNote">其他（做夢）<span class="optional">選填</span>
+            <textarea id="dreamNote" name="dreamNote" rows="3" maxlength="200" placeholder="例如：有做夢、半夜醒來，或其他想記錄的感受…"></textarea>
+            <small class="counter"><span id="dreamCount">0</span>/200</small>
+          </label>
+        </section>
+
+        <button id="submitButton" class="submit-button" type="submit">儲存並繼續 <span>→</span></button>
+        <a class="back-link" href="index.html">← 返回基本資料</a>
+        <p class="security-note">⌁ 睡眠紀錄只用於提供個人化健康建議</p>
+      </form>
+    </main>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="sleep.js?v=20260901"></script>
+  </body>
+</html>

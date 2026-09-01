@@ -25,8 +25,9 @@ function errorFor(name, message = "") {
   const target = document.querySelector(`[data-error="${name}"]`);
   if (target) target.textContent = message;
 
-  // A radio group is a RadioNodeList, not a single element. Locate the first
-  // matching control so grouped radios and regular inputs follow the same path.
+  // `form.elements.gender` is a RadioNodeList, not a single element, so it
+  // doesn't provide `closest()`. Use the first matching control to locate the
+  // surrounding field for both grouped radios and ordinary inputs.
   const input = form.querySelector(`[name="${name}"]`);
   input?.closest(".field")?.classList.toggle("invalid", Boolean(message));
 }
@@ -65,7 +66,7 @@ form.addEventListener("submit", async event => {
     if (PROFILE_WEBHOOK_URL) { const response = await fetch(PROFILE_WEBHOOK_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=UTF-8"}, body:JSON.stringify(payload) }); if (!response.ok) throw new Error("Webhook request failed"); }
     localStorage.setItem("healthProfile", JSON.stringify(payload));
     showToast("健康檔案已儲存");
-    // 下一步可導向健康目標設定頁，或改成 liff.sendMessages() 回傳摘要到聊天室。
+    window.setTimeout(() => { window.location.href = "sleep.html"; }, 650);
   } catch (error) { console.error(error); showToast("儲存失敗，請稍後再試"); }
   finally { button.disabled=false; button.innerHTML="儲存並繼續 <span>→</span>"; }
 });
