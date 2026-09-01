@@ -1,4 +1,5 @@
 const LIFF_ID = "2010801069-26iRMu35";
+const PROFILE_WEBHOOK_URL = "https://20260419.zeabur.app/webhook/health-profile";
 const form = document.querySelector("#sleepForm");
 const toast = document.querySelector("#toast");
 const bedTime = document.querySelector("#bedTime");
@@ -68,11 +69,12 @@ function validate() {
 form.addEventListener("change", event => { if (event.target.name === "energyLevel") setError("energyLevel"); });
 form.dreamNote.addEventListener("input", () => { document.querySelector("#dreamCount").textContent = form.dreamNote.value.length; });
 
-form.addEventListener("submit", event => {
+form.addEventListener("submit", async event => {
   event.preventDefault();
   if (!validate()) return;
   calculateDuration();
   const payload = {
+    recordType: "sleepQuality",
     bedTime: bedTime.value,
     wakeTime: wakeTime.value,
     durationMinutes,
@@ -82,8 +84,27 @@ form.addEventListener("submit", event => {
     lineUserId: lineProfile?.userId ?? null,
     recordedAt: new Date().toISOString()
   };
-  localStorage.setItem("sleepQuality", JSON.stringify(payload));
-  showToast("睡眠紀錄已儲存");
+  const button = document.querySelector("#submitButton");
+  button.disabled = true;
+  button.textContent = "傳送中…";
+  try {
+    const response = await fetch(PROFILE_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify(payload)
+    });
+    if (!response.ok) throw new Error(`Webhook request failed: ${response.status}`);
+    const result = await response.json();
+    if (!result.ok) throw new Error("n8n did not confirm the sleep record");
+    localStorage.setItem("sleepQuality", JSON.stringify(payload));
+    showToast("睡眠紀錄已傳送至 n8n");
+  } catch (error) {
+    console.error(error);
+    showToast("傳送失敗，請稍後再試");
+  } finally {
+    button.disabled = false;
+    button.innerHTML = "儲存並繼續 <span>→</span>";
+  }
 });
 
 const saved = JSON.parse(localStorage.getItem("sleepQuality") || "null");

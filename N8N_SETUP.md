@@ -6,7 +6,9 @@
 2. 使用者加入好友或輸入「設定資料／健康資料／建立檔案／開始設定」時，n8n 回覆 Flex Message。
 3. Flex Message 的按鈕開啟 LIFF：`https://liff.line.me/2010801069-26iRMu35`。
 4. 使用者送出表單後，LIFF 將資料 POST 至 n8n 的 `health-profile` Webhook。
-5. n8n 驗證年齡、身高、體重及性別並回傳成功結果。
+5. n8n 依 `recordType` 驗證基本資料或睡眠品質，並回傳成功結果。
+
+第二頁送出的睡眠欄位包含 `bedTime`、`wakeTime`、`durationMinutes`、`durationHours`、`energyLevel`、`dreamNote`、`lineUserId` 與 `recordedAt`，並使用 `recordType: "sleepQuality"` 與基本資料共用相同 Webhook。
 
 ## 匯入與設定
 

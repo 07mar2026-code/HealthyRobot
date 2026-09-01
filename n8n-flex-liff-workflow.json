@@ -64,7 +64,7 @@
     },
     {
       "parameters": {
-        "jsCode": "let profile = $json.body;\nif (typeof profile === 'string') {\n  try { profile = JSON.parse(profile); } catch { throw new Error('無法解析健康資料'); }\n}\n\nconst age = Number(profile.age);\nconst heightCm = Number(profile.heightCm);\nconst weightKg = Number(profile.weightKg);\nconst allowedGenders = ['female', 'male', 'other'];\n\nif (!allowedGenders.includes(profile.gender)) throw new Error('生理性別格式錯誤');\nif (!Number.isFinite(age) || age < 1 || age > 120) throw new Error('年齡超出範圍');\nif (!Number.isFinite(heightCm) || heightCm < 80 || heightCm > 250) throw new Error('身高超出範圍');\nif (!Number.isFinite(weightKg) || weightKg < 20 || weightKg > 400) throw new Error('體重超出範圍');\n\nconst bmi = Number((weightKg / ((heightCm / 100) ** 2)).toFixed(1));\nreturn [{ json: { ok: true, profile: { gender: profile.gender, age, heightCm, weightKg, bmi, lineUserId: profile.lineUserId || null, displayName: profile.displayName || null, updatedAt: new Date().toISOString() } } }];"
+        "jsCode": "let data = $json.body;\nif (typeof data === 'string') {\n  try { data = JSON.parse(data); } catch { throw new Error('無法解析健康資料'); }\n}\n\nif (data.recordType === 'sleepQuality') {\n  const durationMinutes = Number(data.durationMinutes);\n  const energyLevel = Number(data.energyLevel);\n  if (!/^([01]\\d|2[0-3]):[0-5]\\d$/.test(data.bedTime || '')) throw new Error('入睡時間格式錯誤');\n  if (!/^([01]\\d|2[0-3]):[0-5]\\d$/.test(data.wakeTime || '')) throw new Error('起床時間格式錯誤');\n  if (!Number.isFinite(durationMinutes) || durationMinutes < 1 || durationMinutes > 1440) throw new Error('睡眠時數超出範圍');\n  if (!Number.isInteger(energyLevel) || energyLevel < 1 || energyLevel > 5) throw new Error('精神程度超出範圍');\n  const sleep = { recordType: 'sleepQuality', bedTime: data.bedTime, wakeTime: data.wakeTime, durationMinutes, durationHours: Number((durationMinutes / 60).toFixed(2)), energyLevel, dreamNote: String(data.dreamNote || '').slice(0, 200), lineUserId: data.lineUserId || null, recordedAt: data.recordedAt || new Date().toISOString() };\n  return [{ json: { ok: true, recordType: 'sleepQuality', sleep } }];\n}\n\nconst age = Number(data.age);\nconst heightCm = Number(data.heightCm);\nconst weightKg = Number(data.weightKg);\nconst allowedGenders = ['female', 'male', 'other'];\nif (!allowedGenders.includes(data.gender)) throw new Error('生理性別格式錯誤');\nif (!Number.isFinite(age) || age < 1 || age > 120) throw new Error('年齡超出範圍');\nif (!Number.isFinite(heightCm) || heightCm < 80 || heightCm > 250) throw new Error('身高超出範圍');\nif (!Number.isFinite(weightKg) || weightKg < 20 || weightKg > 400) throw new Error('體重超出範圍');\nconst bmi = Number((weightKg / ((heightCm / 100) ** 2)).toFixed(1));\nreturn [{ json: { ok: true, recordType: 'healthProfile', profile: { gender: data.gender, age, heightCm, weightKg, bmi, lineUserId: data.lineUserId || null, displayName: data.displayName || null, updatedAt: new Date().toISOString() } } }];"
       },
       "id": "bedf45b7-25ab-4c91-9283-c15a27e9f502",
       "name": "驗證健康資料",
@@ -75,7 +75,7 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ { ok: $json.ok, message: '健康檔案已儲存', profile: $json.profile } }}",
+        "responseBody": "={{ { ok: $json.ok, recordType: $json.recordType, message: $json.recordType === 'sleepQuality' ? '睡眠紀錄已接收' : '健康檔案已儲存', profile: $json.profile, sleep: $json.sleep } }}",
         "options": {
           "responseHeaders": {
             "entries": [
