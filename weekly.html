@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#F7F5F0" />
+    <title>本週健康回饋｜健康小助手</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css?v=20260902" />
+    <link rel="stylesheet" href="weekly.css?v=20260902" />
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  </head>
+  <body>
+    <main class="app-shell weekly-page">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="回到健康小助手首頁"><span class="brand-mark">＋</span><span>健康小助手</span></a>
+        <span id="lineStatus" class="line-status">本週回饋</span>
+      </header>
+
+      <section class="weekly-hero" aria-labelledby="pageTitle">
+        <div>
+          <p class="eyebrow">YOUR WEEK IN REVIEW</p>
+          <h1 id="pageTitle"><span id="greetingName">嗨</span>，這週辛苦了</h1>
+          <p id="dateRange">正在整理本週紀錄…</p>
+        </div>
+        <div class="week-orbit" aria-hidden="true"><span>♥</span><i></i><b>✦</b></div>
+      </section>
+
+      <p id="demoNotice" class="demo-notice" hidden>目前顯示示範資料；串接 n8n 後會換成你的真實紀錄。</p>
+
+      <section class="warm-card" aria-labelledby="warmTitle">
+        <span class="warm-icon" aria-hidden="true">☀</span>
+        <div><p>給這週的你</p><h2 id="warmTitle">你願意停下來關心自己，已經很不容易了。</h2></div>
+      </section>
+
+      <section class="summary-grid" aria-label="本週睡眠與飲食摘要">
+        <article class="summary-card sleep-summary">
+          <div class="summary-head"><span>☾</span><div><p>睡眠狀況</p><strong id="sleepStatus">正在計算</strong></div></div>
+          <div class="metric"><strong id="sleepHours">--</strong><span>平均睡眠<br />小時／晚</span></div>
+          <div class="progress" aria-hidden="true"><i id="sleepProgress"></i></div>
+          <p id="sleepDetail" class="summary-copy">整理本週睡眠紀錄中…</p>
+        </article>
+
+        <article class="summary-card food-summary">
+          <div class="summary-head"><span>♨</span><div><p>飲食狀況</p><strong id="foodStatus">正在計算</strong></div></div>
+          <div class="metric"><strong id="balancedMeals">--</strong><span>均衡餐次<br />本週累積</span></div>
+          <div class="progress" aria-hidden="true"><i id="foodProgress"></i></div>
+          <p id="foodDetail" class="summary-copy">整理本週飲食紀錄中…</p>
+        </article>
+      </section>
+
+      <section class="gentle-section" aria-labelledby="tipsTitle">
+        <div class="section-title"><div><p>一點點就很好</p><h2 id="tipsTitle">下週的小小提醒</h2></div><span>不必一次做到滿分</span></div>
+        <div id="tipList" class="tip-list"></div>
+      </section>
+
+      <section class="closing-card">
+        <div aria-hidden="true">🌿</div>
+        <p id="closingMessage">健康不是每天都完美，而是你願意一次次回到自己身邊。</p>
+      </section>
+
+      <button id="shareButton" class="submit-button share-button" type="button">分享這週的鼓勵 <span>♡</span></button>
+      <a class="back-link" href="sleep.html">查看睡眠紀錄</a>
+      <p class="security-note">本頁僅提供生活習慣回饋，不取代醫療建議</p>
+    </main>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="weekly.js?v=20260902"></script>
+  </body>
+</html>
