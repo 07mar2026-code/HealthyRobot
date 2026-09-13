@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#F7F5EF" />
+    <title>飲食指南｜營養陪跑員</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css?v=20260913" />
+    <link rel="stylesheet" href="nutrition.css?v=20260913" />
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  </head>
+  <body>
+    <main class="app-shell nutrition-page">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="回到營養陪跑員首頁"><span class="brand-mark">＋</span><span>營養陪跑員</span></a>
+        <span id="lineStatus" class="line-status">飲食指南</span>
+      </header>
+
+      <section class="nutrition-hero" aria-labelledby="pageTitle">
+        <div>
+          <p class="eyebrow">211 BALANCED PLATE</p>
+          <h1 id="pageTitle">這一餐，簡單吃得均衡</h1>
+          <p>蔬菜 2、全穀澱粉 1、豆魚蛋肉 1，不必秤重也能快速校準。</p>
+        </div>
+        <img src="assets/nutrition/211-plate-watercolor.jpg" alt="蔬菜二份、澱粉一份、蛋白質一份的211均衡餐盤" />
+      </section>
+
+      <section class="ratio-card" aria-label="211餐盤比例">
+        <div class="ratio vegetable"><strong>2</strong><span>蔬菜</span><small>餐盤 1/2</small></div>
+        <div class="ratio starch"><strong>1</strong><span>全穀澱粉</span><small>餐盤 1/4</small></div>
+        <div class="ratio protein"><strong>1</strong><span>豆魚蛋肉</span><small>餐盤 1/4</small></div>
+      </section>
+
+      <section class="card guide-card" aria-labelledby="guideTitle">
+        <div class="card-heading">
+          <span class="icon-badge leaf-badge">葉</span>
+          <div><h2 id="guideTitle">快速換算</h2><p>用手掌估份量，外食也能使用</p></div>
+        </div>
+        <div class="portion-list">
+          <article><span>🥬</span><div><b>蔬菜 2 份</b><p>至少兩個拳頭，深綠色與其他顏色各一。</p></div></article>
+          <article><span>🍚</span><div><b>全穀澱粉 1 份</b><p>約一個拳頭，優先選糙米、地瓜或全穀。</p></div></article>
+          <article><span>🐟</span><div><b>蛋白質 1 份</b><p>約一個掌心，豆、魚、蛋與低脂肉輪替。</p></div></article>
+        </div>
+      </section>
+
+      <form id="nutritionForm" novalidate>
+        <section class="card meal-card" aria-labelledby="mealTitle">
+          <div class="card-heading compact-heading">
+            <span class="icon-badge bowl-badge">碗</span>
+            <div><h2 id="mealTitle">記錄這一餐</h2><p>選擇實際吃到的份數</p></div>
+          </div>
+
+          <fieldset>
+            <legend>餐別</legend>
+            <div class="choice-grid three-col">
+              <label class="choice"><input type="radio" name="mealType" value="breakfast" required /><span>早餐</span></label>
+              <label class="choice"><input type="radio" name="mealType" value="lunch" /><span>午餐</span></label>
+              <label class="choice"><input type="radio" name="mealType" value="dinner" /><span>晚餐</span></label>
+            </div>
+            <p class="error" data-error="mealType"></p>
+          </fieldset>
+
+          <div class="serving-control" data-name="vegetables">
+            <div><b>蔬菜</b><span>目標 2 份</span></div>
+            <div class="counter-control"><button type="button" data-step="-0.5" aria-label="減少蔬菜份數">−</button><output>0</output><button type="button" data-step="0.5" aria-label="增加蔬菜份數">＋</button></div>
+          </div>
+          <div class="serving-control" data-name="starch">
+            <div><b>全穀澱粉</b><span>目標 1 份</span></div>
+            <div class="counter-control"><button type="button" data-step="-0.5" aria-label="減少澱粉份數">−</button><output>0</output><button type="button" data-step="0.5" aria-label="增加澱粉份數">＋</button></div>
+          </div>
+          <div class="serving-control" data-name="protein">
+            <div><b>豆魚蛋肉</b><span>目標 1 份</span></div>
+            <div class="counter-control"><button type="button" data-step="-0.5" aria-label="減少蛋白質份數">−</button><output>0</output><button type="button" data-step="0.5" aria-label="增加蛋白質份數">＋</button></div>
+          </div>
+          <p class="error" data-error="servings"></p>
+        </section>
+
+        <section id="feedbackCard" class="feedback-card" aria-live="polite">
+          <div class="feedback-score"><strong id="balanceScore">0</strong><span>%<br />接近 211</span></div>
+          <div><b id="feedbackTitle">從這一餐開始覺察</b><p id="feedbackText">調整份數後，這裡會提供溫和的下一步建議。</p></div>
+        </section>
+
+        <label class="privacy"><input id="privacy" name="privacy" type="checkbox" required /><span>我同意營養陪跑員使用這筆飲食紀錄提供生活習慣回饋。本功能不取代醫師或營養師的診療。</span></label>
+        <p class="error privacy-error" data-error="privacy"></p>
+        <button id="submitButton" class="submit-button" type="submit">儲存這一餐 <span>→</span></button>
+        <p class="security-note">份量為生活化估算，不需要追求每餐滿分</p>
+      </form>
+    </main>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="nutrition.js?v=20260913"></script>
+  </body>
+</html>

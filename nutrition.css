@@ -1,0 +1,18 @@
+.nutrition-page { --sand:#f7f5ef;--sage:#718d6e;--leaf:#4f765a;--gold:#d79b48;background:var(--sand); }
+.nutrition-page::before { width:320px;height:320px;top:-215px;right:-150px;background:#e8eadb; }
+.nutrition-hero { min-height:178px;padding:22px 2px 20px;display:flex;align-items:center;gap:12px; }
+.nutrition-hero > div { flex:1;min-width:0; }
+.nutrition-hero h1 { margin:0;font-size:30px;line-height:1.28;letter-spacing:-.045em; }
+.nutrition-hero p:not(.eyebrow) { margin:9px 0 0;color:var(--muted);font-size:13px;line-height:1.7; }
+.nutrition-hero img { flex:0 0 116px;width:116px;height:116px;object-fit:cover;border-radius:50%;box-shadow:0 12px 28px #54705b2b; }
+.ratio-card { display:grid;grid-template-columns:2fr 1fr 1fr;gap:7px;margin-bottom:16px; }
+.ratio { min-height:90px;padding:12px 8px;border-radius:17px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid #ffffffaa;box-shadow:0 8px 20px #4057440c; }
+.ratio strong { font:700 25px/1 "DM Sans"; }.ratio span { margin-top:5px;font-size:12px;font-weight:700; }.ratio small { margin-top:2px;font-size:9px;color:#65736b; }
+.vegetable { background:#dfeddf;color:#426c4f; }.starch { background:#f3e7c9;color:#8b642a; }.protein { background:#f4ddd2;color:#8d5949; }
+.guide-card,.meal-card { margin-bottom:16px; }.leaf-badge { background:#e1efe0;color:#4e7657;font-size:12px;font-weight:800; }.bowl-badge { background:#f5e7cb;color:#9a6824;font-size:12px;font-weight:800; }
+.portion-list { display:grid;gap:12px; }.portion-list article { display:flex;align-items:flex-start;gap:11px;padding:11px 12px;border-radius:14px;background:#fafcf9; }.portion-list article > span { width:34px;height:34px;border-radius:11px;background:#eef4eb;display:grid;place-items:center; }.portion-list b { font-size:13px; }.portion-list p { margin:3px 0 0;color:var(--muted);font-size:11px;line-height:1.55; }
+.three-col { grid-template-columns:repeat(3,1fr); }.three-col .choice:last-child { grid-column:auto; }
+.serving-control { display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-top:1px solid var(--line); }.serving-control > div:first-child { display:grid;gap:2px; }.serving-control b { font-size:13px; }.serving-control span { color:var(--muted);font-size:10px; }
+.counter-control { display:flex;align-items:center;gap:10px; }.counter-control button { width:35px;height:35px;border:1px solid #dbe6dc;border-radius:12px;background:#f8fbf8;color:var(--leaf);font-size:20px;cursor:pointer; }.counter-control button:active { transform:scale(.96); }.counter-control output { min-width:29px;text-align:center;color:#365542;font:700 17px "DM Sans"; }
+.feedback-card { display:flex;align-items:center;gap:15px;margin:0 0 20px;padding:17px;border:1px solid #dfe6d5;border-radius:19px;background:linear-gradient(120deg,#edf4e8,#fffaf0); }.feedback-score { flex:0 0 69px;height:69px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;color:var(--leaf);box-shadow:0 7px 18px #42624718; }.feedback-score strong { font:700 25px/1 "DM Sans"; }.feedback-score span { margin-left:2px;font-size:8px;line-height:1.15; }.feedback-card > div:last-child { flex:1; }.feedback-card b { font-size:13px; }.feedback-card p { margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.55; }
+@media (max-width:380px) { .nutrition-hero h1 { font-size:27px; }.nutrition-hero img { flex-basis:96px;width:96px;height:96px; }.ratio { padding-inline:5px; }.ratio span { font-size:11px; } }
