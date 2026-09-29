@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#F7F5F0" />
-    <title>本週健康回饋｜健康小助手</title>
+    <meta name="description" content="健康陪跑員每週回顧：整理飲食與睡眠紀錄，陪你看見進展並選擇下一個小行動。" />
+    <title>本週健康回饋｜健康陪跑員</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,7 +16,7 @@
   <body>
     <main class="app-shell weekly-page">
       <header class="topbar">
-        <a class="brand" href="index.html" aria-label="回到健康小助手首頁"><span class="brand-mark">＋</span><span>健康小助手</span></a>
+        <a class="brand" href="index.html" aria-label="回到健康陪跑員首頁"><span class="brand-mark">＋</span><span>健康陪跑員</span></a>
         <span id="lineStatus" class="line-status">本週回饋</span>
       </header>
 
@@ -25,7 +26,7 @@
           <h1 id="pageTitle"><span id="greetingName">嗨</span>，這週辛苦了</h1>
           <p id="dateRange">正在整理本週紀錄…</p>
         </div>
-        <div class="week-orbit" aria-hidden="true"><span>♥</span><i></i><b>✦</b></div>
+        <div class="week-orbit" aria-hidden="true"><img src="assets/weekly/heart-care.png" alt="" /></div>
       </section>
 
       <p id="demoNotice" class="demo-notice" hidden>目前顯示示範資料；串接 n8n 後會換成你的真實紀錄。</p>
@@ -37,14 +38,14 @@
 
       <section class="summary-grid" aria-label="本週睡眠與飲食摘要">
         <article class="summary-card sleep-summary">
-          <div class="summary-head"><span>☾</span><div><p>睡眠狀況</p><strong id="sleepStatus">正在計算</strong></div></div>
+          <div class="summary-head"><span><img src="assets/weekly/sleep-moon.png" alt="" /></span><div><p>睡眠狀況</p><strong id="sleepStatus">正在計算</strong></div></div>
           <div class="metric"><strong id="sleepHours">--</strong><span>平均睡眠<br />小時／晚</span></div>
           <div class="progress" aria-hidden="true"><i id="sleepProgress"></i></div>
           <p id="sleepDetail" class="summary-copy">整理本週睡眠紀錄中…</p>
         </article>
 
         <article class="summary-card food-summary">
-          <div class="summary-head"><span>♨</span><div><p>飲食狀況</p><strong id="foodStatus">正在計算</strong></div></div>
+          <div class="summary-head"><span><img src="assets/weekly/balanced-bowl.png" alt="" /></span><div><p>飲食狀況</p><strong id="foodStatus">正在計算</strong></div></div>
           <div class="metric"><strong id="balancedMeals">--</strong><span>均衡餐次<br />本週累積</span></div>
           <div class="progress" aria-hidden="true"><i id="foodProgress"></i></div>
           <p id="foodDetail" class="summary-copy">整理本週飲食紀錄中…</p>
