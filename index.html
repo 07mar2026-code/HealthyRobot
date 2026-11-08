@@ -85,14 +85,18 @@
           <div class="bmi-copy"><b id="bmiLabel">輸入身高與體重後計算</b><span id="bmiDescription">BMI 僅供初步健康評估參考</span><div class="bmi-scale"><i id="bmiMarker"></i></div></div>
         </section>
 
-        <label class="privacy"><input id="privacy" name="privacy" type="checkbox" required /><span>我同意健康陪跑員依據<a href="#privacy">隱私權政策</a>蒐集與使用上述健康資料，以提供個人化服務。</span></label>
+        <details id="profile-data-notice">
+          <summary>健康檔案如何儲存與使用</summary>
+          <p>健康陪跑員會將經 LINE 驗證的帳號識別碼、生理性別、年齡、身高、體重、由此計算的 BMI，以及同意與更新時間，存入 Supabase，用於建立與更新個人健康檔案。同一 LINE 帳號只保留一份最新的健康檔案。</p>
+        </details>
+        <label class="privacy"><input id="privacy" name="privacy" type="checkbox" required /><span>我已閱讀上述資料使用說明，並同意儲存我的健康檔案。</span></label>
         <p class="error privacy-error" data-error="privacy"></p>
 
-        <button id="submitButton" class="submit-button" type="submit">儲存並繼續 <span>→</span></button>
+        <button id="submitButton" class="submit-button" type="submit" disabled>儲存並繼續 <span>→</span></button>
         <p class="security-note">⌁ 你的資料會受到妥善保護</p>
       </form>
     </main>
     <div id="toast" class="toast" role="status"></div>
-  <script src="app.js?v=20260901"></script>
+  <script src="app.js?v=20261108b"></script>
   </body>
 </html>

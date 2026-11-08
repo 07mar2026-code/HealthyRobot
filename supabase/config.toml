@@ -1,0 +1,4 @@
+project_id = "HealthyRobot"
+
+[functions.liff-health-profile]
+verify_jwt = true
