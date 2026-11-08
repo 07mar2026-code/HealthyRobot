@@ -1,22 +1,31 @@
-// 部署前請換成 LINE Developers 後台提供的 LIFF ID；留空時可在一般瀏覽器預覽。
 const LIFF_ID = "2010801069-26iRMu35";
-// 若使用 n8n，填入 Webhook Production URL，例如：https://your-n8n/webhook/health-profile
-const PROFILE_WEBHOOK_URL = "https://20260419.zeabur.app/webhook/health-profile";
+const PROFILE_API = "https://xgggajmuqcwatbdmfjat.supabase.co/functions/v1/liff-health-profile";
+const CONSENT_VERSION = "2026-11-08";
 
 const form = document.querySelector("#profileForm");
 const fields = ["age", "height", "weight"];
 const toast = document.querySelector("#toast");
-let lineProfile = null;
+const button = document.querySelector("#submitButton");
+const buttonLabel = button.innerHTML;
+const lineStatus = document.querySelector("#lineStatus");
 
 async function initialiseLiff() {
-  if (!LIFF_ID || !window.liff) return;
   try {
     await liff.init({ liffId: LIFF_ID });
-    if (!liff.isLoggedIn()) { liff.login(); return; }
-    lineProfile = await liff.getProfile();
-    document.querySelector("#lineStatus").textContent = lineProfile.displayName;
-  } catch (error) {
-    console.warn("LIFF 初始化失敗：", error);
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return false;
+    }
+    if (!liff.getAccessToken()) {
+      lineStatus.textContent = "請從 LINE 重新開啟";
+      return false;
+    }
+    lineStatus.textContent = "LINE 已登入";
+    button.disabled = false;
+    return true;
+  } catch {
+    lineStatus.textContent = "LINE 登入失敗，請重新開啟";
+    return false;
   }
 }
 
@@ -51,23 +60,68 @@ function validate() {
   let valid = true;
   if (!form.gender.value) { errorFor("gender", "請選擇生理性別"); valid = false; } else errorFor("gender");
   const rules = { age:[1,120,"請輸入 1 至 120 歲"], height:[80,250,"請輸入 80 至 250 cm"], weight:[20,400,"請輸入 20 至 400 kg"] };
-  for (const [name, [min,max,message]] of Object.entries(rules)) { const value = Number(form[name].value); if (!value || value < min || value > max) { errorFor(name,message); valid=false; } else errorFor(name); }
+  for (const [name, [min, max, message]] of Object.entries(rules)) {
+    const input = form[name];
+    const value = input.valueAsNumber;
+    const inRange = value >= min && value <= max;
+    const precision = name === "age" ? "年齡請填整數" : "請填至小數點後一位";
+    const error = inRange ? (input.validity.stepMismatch ? precision : "") : message;
+    errorFor(name, error);
+    if (error) valid = false;
+  }
   if (!form.privacy.checked) { errorFor("privacy", "請先閱讀並同意隱私權政策"); valid=false; } else errorFor("privacy");
   return valid;
 }
 fields.forEach(name => form[name].addEventListener("input", () => { errorFor(name); calculateBmi(); }));
 form.addEventListener("change", event => { if (event.target.name === "gender") errorFor("gender"); if (event.target.name === "privacy") errorFor("privacy"); });
+const liffReady = initialiseLiff();
+let saving = false;
+
 form.addEventListener("submit", async event => {
   event.preventDefault();
-  if (!validate()) return;
-  const payload = { gender:form.gender.value, age:Number(form.age.value), heightCm:Number(form.height.value), weightKg:Number(form.weight.value), bmi:Number((Number(form.weight.value) / ((Number(form.height.value)/100)**2)).toFixed(1)), lineUserId:lineProfile?.userId ?? null, displayName:lineProfile?.displayName ?? null, updatedAt:new Date().toISOString() };
-  const button = document.querySelector("#submitButton"); button.disabled=true; button.textContent="儲存中…";
+  if (saving || !validate()) return;
+
+  saving = true;
+  button.disabled = true;
+  button.textContent = "儲存中…";
+  let saved = false;
   try {
-    if (PROFILE_WEBHOOK_URL) { const response = await fetch(PROFILE_WEBHOOK_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=UTF-8"}, body:JSON.stringify(payload) }); if (!response.ok) throw new Error("Webhook request failed"); }
-    localStorage.setItem("healthProfile", JSON.stringify(payload));
+    const accessToken = await liffReady ? liff.getAccessToken() : null;
+    if (!accessToken) {
+      showToast("請從 LINE 重新開啟健康檔案後再儲存");
+      return;
+    }
+    const response = await fetch(PROFILE_API, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gender: form.gender.value,
+        age: form.age.valueAsNumber,
+        heightCm: form.height.valueAsNumber,
+        weightKg: form.weight.valueAsNumber,
+        consent: form.privacy.checked,
+        consentVersion: CONSENT_VERSION,
+      }),
+    });
+    if (response.status === 401) {
+      showToast("LINE 登入已失效，請從 LINE 重新開啟");
+      return;
+    }
+    if (!response.ok || (await response.json()).ok !== true) throw new Error("Save failed");
+
+    saved = true;
     showToast("健康檔案已儲存");
     window.setTimeout(() => { window.location.href = "sleep.html"; }, 650);
-  } catch (error) { console.error(error); showToast("儲存失敗，請稍後再試"); }
-  finally { button.disabled=false; button.innerHTML="儲存並繼續 <span>→</span>"; }
+  } catch {
+    showToast("儲存失敗，請稍後再試");
+  } finally {
+    if (!saved) {
+      saving = false;
+      button.disabled = !(await liffReady);
+      button.innerHTML = buttonLabel;
+    }
+  }
 });
-initialiseLiff();
