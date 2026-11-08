@@ -5,7 +5,7 @@ const consentVersion = "2026-11-08";
 const corsHeaders = {
   "Access-Control-Allow-Origin": allowedOrigin,
   "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Authorization, Content-Type",
+  "Access-Control-Allow-Headers": "apikey, Content-Type, X-Line-Access-Token",
   "Cache-Control": "no-store",
   "Vary": "Origin",
 };
@@ -46,7 +46,7 @@ Deno.serve(async (request) => {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });
   if (request.method !== "POST") return reply(405, "method_not_allowed");
 
-  const accessToken = request.headers.get("Authorization")?.match(/^Bearer ([^\s,]+)$/i)?.[1];
+  const accessToken = request.headers.get("X-Line-Access-Token")?.match(/^[^\s,]+$/)?.[0];
   if (!accessToken || accessToken.length > 2048) return reply(401, "line_login_required");
   if (request.headers.get("Content-Type")?.split(";")[0].trim() !== "application/json") {
     return reply(415, "json_required");

@@ -1,4 +1,4 @@
 project_id = "HealthyRobot"
 
 [functions.liff-health-profile]
-verify_jwt = false
+verify_jwt = true

@@ -1,5 +1,6 @@
 const LIFF_ID = "2010801069-26iRMu35";
 const PROFILE_API = "https://xgggajmuqcwatbdmfjat.supabase.co/functions/v1/liff-health-profile";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_zEfObRt85Pgu3ibpZlzv0w_dU_FAxOd";
 const CONSENT_VERSION = "2026-11-08";
 
 const form = document.querySelector("#profileForm");
@@ -86,15 +87,17 @@ form.addEventListener("submit", async event => {
   button.textContent = "儲存中…";
   let saved = false;
   try {
-    const accessToken = await liffReady ? liff.getAccessToken() : null;
+    const accessToken = (await liffReady) ? liff.getAccessToken() : null;
     if (!accessToken) {
       showToast("請從 LINE 重新開啟健康檔案後再儲存");
       return;
     }
     const response = await fetch(PROFILE_API, {
       method: "POST",
+      redirect: "error",
       headers: {
-        Authorization: "Bearer " + accessToken,
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        "X-Line-Access-Token": accessToken,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
